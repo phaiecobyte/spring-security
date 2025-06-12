@@ -14,7 +14,7 @@ public class OpenApiConfig {
     public OpenAPI customOpenAPI() {
         return new OpenAPI().components(new Components()
                 .addSecuritySchemes("basicScheme", new SecurityScheme()
-                        .type(SecurityScheme.Type.HTTP).scheme("basic"))).info(new Info().title("Custom API")
+                        .type(SecurityScheme.Type.HTTP).scheme("basic"))).info(new Info().title("Spring Security")
                 .version("100")).addTagsItem(new Tag().name("mytag"));
     }
 
