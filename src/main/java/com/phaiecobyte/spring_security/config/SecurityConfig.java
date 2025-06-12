@@ -11,6 +11,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -33,10 +34,6 @@ public class SecurityConfig {
             http.csrf(AbstractHttpConfigurer::disable)
                     .authorizeHttpRequests(request ->
                             request.requestMatchers("/api/v1/auth/**").permitAll()
-                                    .requestMatchers("/swagger-ui/**").permitAll()
-                                    .requestMatchers("/swagger-ui.html").permitAll()
-                                    .requestMatchers("/v3/api-docs/**").permitAll()
-                                    .requestMatchers("/v3/api-docs.yaml").permitAll()
                                     .requestMatchers("/swagger-resources/**").permitAll()
                                     .requestMatchers("/api/v1/admin").hasAnyAuthority(Role.ROLE_ADMIN.name())
                                     .requestMatchers("/api/v1/user").hasAnyAuthority(Role.ROLE_USER.name())
@@ -49,6 +46,11 @@ public class SecurityConfig {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer(){
+        return (web)->web.ignoring().requestMatchers("/swagger-ui/**","/v3/api-docs/**");
     }
 
     @Bean
